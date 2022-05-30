@@ -1,0 +1,17 @@
+version: "3.1"
+
+volumes:
+  database:
+  
+services:
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./sql:/var/lib/mysql
+      
+  phpmyadmin:
+    image: phpmyadmin:5.1-apache
+    ports:
+      - 8081:80
