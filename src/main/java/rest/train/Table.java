@@ -3,13 +3,15 @@ package rest.train;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+// Used for callback
 public class Table {
+    // Entry values
     private int m_id;
     private String m_destination;
     private String m_etapes;
     private int m_nbPassagers;
 
-    public void setTable(ResultSet result) {
+    public void callback(ResultSet result) {
         try {
             while(result.next()) {
                 this.m_id = result.getInt(1);

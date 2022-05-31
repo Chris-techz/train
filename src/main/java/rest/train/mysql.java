@@ -3,24 +3,26 @@ import java.sql.*;
 
 
 
-public class MySQL{
+public class MySQL {
     
+    // sql connection object
     private Connection m_con = null;
+    // table object, used for callback
     private Table m_table;
-    // TODO : add sprind entry points, add dependencies in pom.xml
-    // Folow the spring's tutorial 
-
-    private String url =  "jdbc:mysql://localhost/Resatrain?useSSL=false";
+    // database logs, allowPublicKeyRetrieval ??
+    private String url =  "jdbc:mysql://localhost/Resatrain?allowPublicKeyRetrieval=true&useSSL=false";
     private String name = "root";
     private String password = "root";
 
-    private String test;
+    // *****
 
+    // Connect and instanciate a new table object, for callback
     MySQL() {
         this.connect();
         this.m_table = new Table();
     }
 
+    // Connect to the database, handle sql exceptions
     protected int connect() {
         try {
             m_con = DriverManager.getConnection(url, name, password);
@@ -32,6 +34,7 @@ public class MySQL{
         return 0;
     }
 
+    // Close the connection
     public int close() {
         try {
             m_con.close();
@@ -41,6 +44,7 @@ public class MySQL{
         return 0;
     }
 
+    // Add a new reservation to the database
     public void reserve(String destination, boolean volDirect, int nbPassagers) {
         String sql;
         
@@ -71,7 +75,8 @@ public class MySQL{
         }
     }
 
-    public void getReservation(int id) {
+    // Get a reservation with it ID
+    public void retrieveReservation(int id) {
         String sql = "SELECT * FROM Reservation WHERE ";
 
         try {
@@ -86,13 +91,14 @@ public class MySQL{
             // execute querry
             ResultSet result = st.executeQuery(sql);
             
-            this.m_table.setTable(result);
+            this.m_table.callback(result);
 
         }catch(SQLException ex) {
             System.out.println("error " + ex);
         }
     }
 
+    // Update a reservation's number of travelers with it ID
     public void updateNbPassagers(int newNbPassagers, int idReservation) {
 
         String sql = "UPDATE Reservation SET v_nbPassagers_Reservation='";
@@ -114,4 +120,5 @@ public class MySQL{
 
     }
 
+    public Table getTable() {return this.m_table;}
 }
