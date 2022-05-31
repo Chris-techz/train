@@ -3,25 +3,27 @@ import java.sql.*;
 
 
 
-public class mysql{
+public class MySQL{
     
-    private Connection con = null;
+    private Connection m_con = null;
+    private Table m_table;
     // TODO : add sprind entry points, add dependencies in pom.xml
     // Folow the spring's tutorial 
 
-    private String url =  "jdbc:mysql://localhost/resatrain?useSSL=false";
+    private String url =  "jdbc:mysql://localhost/Resatrain?useSSL=false";
     private String name = "root";
-    private String password = "";
+    private String password = "root";
 
     private String test;
 
-    mysql() {
+    MySQL() {
         this.connect();
+        this.m_table = new Table();
     }
 
     protected int connect() {
         try {
-            con = DriverManager.getConnection(url, name, password);
+            m_con = DriverManager.getConnection(url, name, password);
 
         } catch (SQLException ex) {
             System.out.println("error " + ex);
@@ -32,14 +34,14 @@ public class mysql{
 
     public int close() {
         try {
-            con.close();
+            m_con.close();
         }catch(SQLException ex) {
             System.out.println("error " + ex);
         }
         return 0;
     }
 
-    public int reserve(String destination, boolean volDirect, int nbPassagers) {
+    public void reserve(String destination, boolean volDirect, int nbPassagers) {
         String sql;
         
         if(volDirect)
@@ -59,7 +61,49 @@ public class mysql{
         }
         try {
             // create statement
-            Statement st = con.createStatement();
+            Statement st = m_con.createStatement();
+
+            // execute querry
+            st.executeUpdate(sql);
+
+        }catch(SQLException ex) {
+            System.out.println("error " + ex);
+        }
+    }
+
+    public void getReservation(int id) {
+        String sql = "SELECT * FROM Reservation WHERE ";
+
+        try {
+            sql += "pk_id_Reservation = '";
+            sql += id;
+            sql += "';";
+            
+        
+            // create statement
+            Statement st = m_con.createStatement();
+
+            // execute querry
+            ResultSet result = st.executeQuery(sql);
+            
+            this.m_table.setTable(result);
+
+        }catch(SQLException ex) {
+            System.out.println("error " + ex);
+        }
+    }
+
+    public void updateNbPassagers(int newNbPassagers, int idReservation) {
+
+        String sql = "UPDATE Reservation SET v_nbPassagers_Reservation='";
+        sql += newNbPassagers;
+        sql += "' WHERE pk_id_Reservation='";
+        sql += idReservation;
+        sql += "';";
+        
+        try {
+            // create statement
+            Statement st = m_con.createStatement();
 
             // execute querry
             st.executeUpdate(sql);
@@ -68,8 +112,6 @@ public class mysql{
             System.out.println("error " + ex);
         }
 
-        return 0;
     }
 
 }
-
