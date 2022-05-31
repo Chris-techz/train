@@ -49,13 +49,13 @@ public class MySQL {
         String sql;
         
         if(volDirect)
-            sql = "INSERT INTO RESERVATION (destination, nb_passagers) VALUES('" + 
+            sql = "INSERT INTO RESERVATION (v_destination_Reservation, v_nbPassagers_Reservation) VALUES('" + 
                 destination +
                 "', '" +
                 nbPassagers + 
                 "');";
         else {
-            sql = "INSERT INTO RESERVATION (destination, etapes , nb_passagers) VALUES('" + 
+            sql = "INSERT INTO RESERVATION (v_destination_Reservation, v_etapes_Reservation , v_nbPassagers_Reservation) VALUES('" + 
                 destination +
                 "', '" +
                 "Marseille;Lyon" +
@@ -120,5 +120,22 @@ public class MySQL {
 
     }
 
+    public void deleteEntry(int id) {
+        String sql = "DELETE FROM Reservation WHERE pk_id_Reservation='";
+        sql += id;
+        sql += "';";
+        
+        try {
+            // create statement
+            Statement st = m_con.createStatement();
+
+            // execute querry
+            st.executeUpdate(sql);
+
+        }catch(SQLException ex) {
+            System.out.println("error " + ex);
+        }
+
+    }
     public Table getTable() {return this.m_table;}
 }
