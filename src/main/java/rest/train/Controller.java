@@ -3,7 +3,6 @@ package rest.train;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -24,7 +23,7 @@ public class Controller {
         return obj.getTable();
     }
 
-    @GetMapping("/reserver_vol_direct/{destination}/{nbPassagers}")
+    @GetMapping("/reserver_trajet_direct/{destination}/{nbPassagers}")
     Table reserveDirect(@PathVariable String destination, @PathVariable int nbPassagers) {
         MySQL obj = new MySQL();
         if (!destination.isEmpty() && nbPassagers != 0) {
@@ -36,7 +35,7 @@ public class Controller {
         return obj.getTable();
     }
 
-    @GetMapping("/reserver_vol_non_direct/{destination}/{nbPassagers}")
+    @GetMapping("/reserver_trajet_non_direct/{destination}/{nbPassagers}")
     void reserveIndirect(@PathVariable String destination, @PathVariable int nbPassagers) {
         MySQL obj = new MySQL();
         if (!destination.isEmpty() && nbPassagers != 0) {

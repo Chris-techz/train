@@ -45,10 +45,10 @@ public class MySQL {
     }
 
     // Add a new reservation to the database
-    public void reserve(String destination, boolean volDirect, int nbPassagers) {
+    public void reserve(String destination, boolean trajetDirect, int nbPassagers) {
         String sql;
         
-        if(volDirect)
+        if(trajetDirect)
             sql = "INSERT INTO RESERVATION (v_destination_Reservation, v_nbPassagers_Reservation) VALUES('" + 
                 destination +
                 "', '" +
